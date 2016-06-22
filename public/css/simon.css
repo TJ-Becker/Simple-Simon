@@ -1,0 +1,73 @@
+		html { 
+		  background: url(/img/music3.jpg) no-repeat center center fixed; 
+		  -webkit-background-size: cover;
+		  -moz-background-size: cover;
+		  -o-background-size: cover;
+		  background-size: cover;
+		  font-family: 'Permanent Marker', cursive;
+		}
+		.info {
+			background-color: white;
+			width: 165px;
+			top: 20px;
+			left: 20px;
+			position: relative;
+			opacity: .5;
+			text-align: center;
+			border: 3px solid red;
+			font-size: 24px;
+			font-family: 'Permanent Marker', cursive;
+		}
+		#start {
+			margin-bottom: 10px;
+		}
+		#loss {
+			position: absolute;
+			left: 220px;
+			width: 350px;
+			top: 50px;
+		}
+
+		.buttons {
+			height: 300px;
+			width: 300px;
+			border: 20px solid black;
+			margin: 0;
+			padding: 0;
+		}
+		.red {
+			background-color: red;
+			position: relative;
+			left: -85px;
+			top: -80px;
+		}
+		.blue {
+			background-color: blue;
+			position: relative;
+			left: 250px;
+			top: -420px;
+		}
+		.green {
+			background-color: green;
+			position: relative;
+			top: -420px;
+    		left: -85px
+		}
+		.yellow {
+			background-color: yellow;
+			position: relative;
+			top: -760px;
+			left: 250px;
+		}
+		#game {
+			margin: 0;
+			background-color: pink;
+			border-radius: 100%;
+			border: 20px solid black;
+			width: 500px;
+			height: 500px;
+			position: relative;
+			margin-right: auto;
+			overflow: hidden;
+			left: 25px;
+		}
