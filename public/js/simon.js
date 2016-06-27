@@ -12,11 +12,22 @@ $(document).ready(function() {
 	var speedArray = [900, 600, 400, 240, 180];
 	var currentScore = 0;
 	var highScore = 0;
+	var canPlay = false;
+	var speed;
 
 	function randomNumber(amount) {
 		var random = Math.floor(Math.random() * (amount) + 1);
 		return random;
 	}
+
+	function lightUp(value) {
+		$('[data-value=' + (value) + ']').animate({
+			'opacity': '.2'
+		}, 100).animate({
+			'opacity': '1'
+		}, 100);
+	}
+
 	function playSound(value) {
 		var sound = soundsArray[value - 1];
 		if (sound.duration > 0 && !sound.paused) {
@@ -34,6 +45,18 @@ $(document).ready(function() {
 		return speed;
 	}
 
+	function simonSequence() {
+		solution.forEach(function(element, index) {
+			setTimeout(function() {
+				lightUp(element);
+				playSound(element);
+			}, (speed * (index + 2)));
+		})
+		setTimeout(function() {
+			canPlay = true;
+		}, (speed * (solution.length + 2)));
+	}
+
 	function score(current) {
 		$('#current-score').html("Current: " + currentScore);
 		if (current > highScore) {
@@ -41,47 +64,40 @@ $(document).ready(function() {
 			$('#high-score').html("High: " + highScore);
 		}
 	}
-	buttons.each(function() {
-		$(this).click(function() {
-			$(this).animate({
-				'opacity': '.2'
-			}, 100).animate( {
-				'opacity': '1'
-			}, 100);
-			var speed = difficulty();
+
+	function newRound() {
+		currentScore++;
+		solution.push(randomNumber(buttons.length));
+		console.log(solution);
+		setTimeout(function() {
+			simonSequence();
+		}, 1000);
+		score(currentScore);
+	}
+
+	buttons.click(function() {
+		if (canPlay) {
+			lightUp($(this).data('value'));
 			playSound($(this).data('value'));
 			if (solution[index] == $(this).data('value')) {
 				index++;
 				console.log("correct.")
-				if ((index) == (solution.length)) {
-					console.log("success. resetting.")
-					index = 0;
-					currentScore++;
-					solution.push(randomNumber(buttons.length));
-					console.log(solution);
-					setTimeout(function() {
-						$(solution).each(function(index, element) {
-							setTimeout(function() {
-								$('[data-value=' + (element) + ']').animate({
-									'opacity': '.2'
-								}, 100).animate({
-									'opacity': '1'
-								}, 100);
-								playSound(element);
-							}, (speed * (index + 2)));
-						})
-					}, 1000);
-					score(currentScore);
-				}
 			} else {
 				index = 0;
-				solution = [];
 				console.log("failure.")
 				currentScore = 0;
 				score();
 				$('#loss').removeAttr('hidden');
+				canPlay = false;
 			}
-		});
+
+			if ((index) == (solution.length)) {
+				canPlay = false;
+				console.log("success. resetting.")
+				index = 0;
+				newRound();
+			}
+		}
 	});
 
 	$('#start').click(function() {
@@ -92,12 +108,8 @@ $(document).ready(function() {
 		var starter = (randomNumber(buttons.length));
 		solution.push(starter);
 		console.log(solution);
-		playSound(starter);
-		$('[data-value=' + starter + ']').animate({
-			'opacity': '.2'
-		}).animate({
-			'opacity': '1'
-		});
+		simonSequence();
+		speed = difficulty();
 		$('#loss').prop('hidden', true);
 	})
 });
